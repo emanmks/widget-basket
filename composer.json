@@ -1,0 +1,34 @@
+{
+    "name": "eman/widget-basket",
+    "description": "Modelling the widget basket solution",
+    "type": "metapackage",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Eman\\WidgetBasket\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "test/"
+        },
+        "files": [
+            "src/ApiTools/constants.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Solaiman Mansyur",
+            "email": "solaiman.mansyur@gmail.com"
+        }
+    ],
+    "scripts": {
+        "cs-check": "phpcs",
+        "phpmd": "phpmd",
+        "test": "phpunit"
+    }
+}
