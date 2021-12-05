@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test;
 
+use Eman\WidgetBasket\DataProvider\ArrayDataProvider;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
 use Eman\WidgetBasket\WidgetBasket;
 use PHPUnit\Framework\TestCase;
@@ -13,25 +14,13 @@ class WidgetBasketTest extends TestCase
     private WidgetBasket $widgetBasket;
     private float $deliveryCost1 = 4.95;
     private float $deliveryCost2 = 2.95;
-    private array $widgets = [
-        'R01' => [
-            'name' => 'Red Widget',
-            'price' => 32.95
-        ],
-        'G01' => [
-            'name' => 'Green Widget',
-            'price' => 24.95
-        ],
-        'B01' => [
-            'name' => 'Blue Widget',
-            'price' => 7.95
-        ],
-    ];
+    private ArrayDataProvider $dataProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->widgetBasket = new WidgetBasket();
+        $this->dataProvider = new ArrayDataProvider();
+        $this->widgetBasket = new WidgetBasket($this->dataProvider);
     }
 
     protected function tearDown(): void
@@ -60,9 +49,9 @@ class WidgetBasketTest extends TestCase
     {
         $total = 0;
         $this->widgetBasket->addItem('B01');
-        $total += $this->widgets['B01']['price'];
+        $total += ($this->dataProvider->getItemByCode('B01'))['price'];
         $this->widgetBasket->addItem('G01');
-        $total += $this->widgets['G01']['price'];
+        $total += ($this->dataProvider->getItemByCode('G01'))['price'];
 
         $this->assertEquals($total + $this->deliveryCost1, $this->widgetBasket->getTotal());
     }
@@ -75,9 +64,9 @@ class WidgetBasketTest extends TestCase
     {
         $total = 0;
         $this->widgetBasket->addItem('R01');
-        $total += $this->widgets['R01']['price'];
+        $total += ($this->dataProvider->getItemByCode('R01'))['price'];
         $this->widgetBasket->addItem('G01');
-        $total += $this->widgets['G01']['price'];
+        $total += ($this->dataProvider->getItemByCode('G01'))['price'];
         $this->assertEquals($total + $this->deliveryCost2, $this->widgetBasket->getTotal());
     }
 
@@ -89,13 +78,13 @@ class WidgetBasketTest extends TestCase
     {
         $total = 0;
         $this->widgetBasket->addItem('R01');
-        $total += $this->widgets['R01']['price'];
+        $total += ($this->dataProvider->getItemByCode('R01'))['price'];
         $this->widgetBasket->addItem('G01');
-        $total += $this->widgets['G01']['price'];
+        $total += ($this->dataProvider->getItemByCode('G01'))['price'];
         $this->widgetBasket->addItem('B01');
-        $total += $this->widgets['B01']['price'];
+        $total += ($this->dataProvider->getItemByCode('B01'))['price'];
         $this->widgetBasket->addItem('G01');
-        $total += $this->widgets['G01']['price'];
+        $total += ($this->dataProvider->getItemByCode('G01'))['price'];
         $this->assertEquals($total, $this->widgetBasket->getTotal());
     }
 }

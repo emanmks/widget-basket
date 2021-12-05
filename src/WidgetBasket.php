@@ -2,30 +2,21 @@
 
 namespace Eman\WidgetBasket;
 
+use Eman\WidgetBasket\DataProvider\WidgetDataProvider;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
 
 class WidgetBasket
 {
-    private array $widgets = [];
+    private WidgetDataProvider $dataProvider;
     private array $items = [];
     private float $total = 0;
 
-    public function __construct()
+    /**
+     * @param WidgetDataProvider $dataProvider
+     */
+    public function __construct(WidgetDataProvider$dataProvider)
     {
-        $this->widgets = [
-            'R01' => [
-                'name' => 'Red Widget',
-                'price' => 32.95
-            ],
-            'G01' => [
-                'name' => 'Green Widget',
-                'price' => 24.95
-            ],
-            'B01' => [
-                'name' => 'Blue Widget',
-                'price' => 7.95
-            ],
-        ];
+        $this->dataProvider = $dataProvider;
     }
 
     /**
@@ -36,22 +27,21 @@ class WidgetBasket
      */
     public function addItem(string $code): void
     {
-        if (!key_exists($code, $this->widgets)) {
+        $item = $this->dataProvider->getItemByCode($code);
+        if (empty($item)) {
             throw new WidgetNotFoundException();
         }
 
         $this->items[] = $code;
-        $this->updateTotalBy($code);
+        $this->total += $item['price'];
     }
 
     /**
-     * @param string $code
-     *
-     * @return void
+     * @return string
      */
-    private function updateTotalBy(string $code): void
+    public function getBasketItem(): string
     {
-        $this->total += $this->widgets[$code]['price'];
+        return implode(',', $this->items);
     }
 
     /**
