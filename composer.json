@@ -29,6 +29,6 @@
     "scripts": {
         "cs-check": "phpcs",
         "phpmd": "phpmd",
-        "test": "phpunit"
+        "test": "phpunit --testdox"
     }
 }
