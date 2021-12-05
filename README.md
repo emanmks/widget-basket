@@ -14,6 +14,8 @@ The solution is framework-agnostic. Can be integrated with any modern PHP framew
 - Composer metapackage
 - Generic Data Provider. The default data provider is ArrayDataProvider.
   We can improve to add MySqlDataProvider or PostgresDataProvider to implement persistence.
+- Generic Delivery Cost calculation. 
+  We can dynamically configure the delivery cost and applying new delivery cost values will not require a new commit.
 
 ## How to use
 

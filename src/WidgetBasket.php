@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Eman\WidgetBasket;
 
 use Eman\WidgetBasket\DataProvider\WidgetDataProvider;
@@ -8,15 +10,18 @@ use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
 class WidgetBasket
 {
     private WidgetDataProvider $dataProvider;
-    private array $items = [];
+    private DeliveryCost $deliveryCost;
+    private array $items;
     private float $total = 0;
 
     /**
      * @param WidgetDataProvider $dataProvider
+     * @param DeliveryCost       $deliveryCost
      */
-    public function __construct(WidgetDataProvider$dataProvider)
+    public function __construct(WidgetDataProvider$dataProvider, DeliveryCost $deliveryCost)
     {
         $this->dataProvider = $dataProvider;
+        $this->deliveryCost = $deliveryCost;
     }
 
     /**
@@ -39,7 +44,7 @@ class WidgetBasket
     /**
      * @return string
      */
-    public function getBasketItem(): string
+    public function getItemList(): string
     {
         return implode(',', $this->items);
     }
@@ -49,15 +54,10 @@ class WidgetBasket
      */
     public function getTotal(): float
     {
-        if ($this->total > 0 && $this->total < 50) {
-            return $this->total + 4.95;
-        }
-
-        if ($this->total >= 50 && $this->total < 90) {
-            return $this->total + 2.95;
-        }
-
-        return $this->total;
+        return $this->total + (
+            $this->total > 0 ?
+                $this->deliveryCost->calculateCost($this->total) : 0
+            );
     }
 
     /**

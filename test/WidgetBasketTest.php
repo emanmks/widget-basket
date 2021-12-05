@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test;
 
 use Eman\WidgetBasket\DataProvider\ArrayDataProvider;
+use Eman\WidgetBasket\DeliveryCost;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
 use Eman\WidgetBasket\WidgetBasket;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,14 @@ class WidgetBasketTest extends TestCase
     {
         parent::setUp();
         $this->dataProvider = new ArrayDataProvider();
-        $this->widgetBasket = new WidgetBasket($this->dataProvider);
+        $deliveryCostConfig = [
+            'lt50' => $this->deliveryCost1,
+            'lt90' => $this->deliveryCost2,
+        ];
+        $this->widgetBasket = new WidgetBasket(
+            $this->dataProvider,
+            new DeliveryCost($deliveryCostConfig)
+        );
     }
 
     protected function tearDown(): void
@@ -86,5 +94,17 @@ class WidgetBasketTest extends TestCase
         $this->widgetBasket->addItem('G01');
         $total += ($this->dataProvider->getItemByCode('G01'))['price'];
         $this->assertEquals($total, $this->widgetBasket->getTotal());
+    }
+
+    /**
+     * @return void
+     * @throws WidgetNotFoundException
+     */
+    public function testCanGetBasketItemListInCommaSeparated()
+    {
+        $this->widgetBasket->addItem('R01');
+        $this->widgetBasket->addItem('G01');
+
+        $this->assertEquals('R01,G01', $this->widgetBasket->getItemList());
     }
 }
