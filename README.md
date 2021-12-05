@@ -35,9 +35,9 @@ composer test
 
 ## Nice to have
 
-- [] Improvement on handling decimal values
-- [] Entity Classes
-- [] Organize Classes In Bounded Context
-- [] Some values can be instantiated in value objects
-- [] Type checking
-- [] Mess Detection
+- [ ] Improvement on handling decimal values
+- [ ] Entity Classes
+- [ ] Organize Classes In Bounded Context
+- [ ] Some values can be instantiated in value objects
+- [ ] Type checking
+- [ ] Mess Detection
