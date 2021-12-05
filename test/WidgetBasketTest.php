@@ -7,6 +7,7 @@ namespace Test;
 use Eman\WidgetBasket\DataProvider\ArrayDataProvider;
 use Eman\WidgetBasket\DeliveryCost;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
+use Eman\WidgetBasket\Factory\WidgetBasketFactory;
 use Eman\WidgetBasket\Offer\RedWidgetHalfPriceForSecondItem;
 use Eman\WidgetBasket\WidgetBasket;
 use PHPUnit\Framework\TestCase;
@@ -22,15 +23,12 @@ class WidgetBasketTest extends TestCase
     {
         parent::setUp();
         $this->dataProvider = new ArrayDataProvider();
-        $deliveryCostConfig = [
+        $config = [
             'lt50' => $this->deliveryCost1,
             'lt90' => $this->deliveryCost2,
+            'itemCode' => 'R01'
         ];
-        $this->widgetBasket = new WidgetBasket(
-            $this->dataProvider,
-            new DeliveryCost($deliveryCostConfig),
-            new RedWidgetHalfPriceForSecondItem('R01')
-        );
+        $this->widgetBasket = (new WidgetBasketFactory())($config);
     }
 
     protected function tearDown(): void
