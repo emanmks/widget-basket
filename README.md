@@ -12,6 +12,8 @@ The solution is framework-agnostic. Can be integrated with any modern PHP framew
 
 - PSR namespaces
 - Composer metapackage
+- Generic Data Provider. The default data provider is ArrayDataProvider.
+  We can improve to add MySqlDataProvider or PostgresDataProvider to implement persistence.
 
 ## How to use
 
