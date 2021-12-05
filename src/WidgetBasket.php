@@ -6,6 +6,7 @@ namespace Eman\WidgetBasket;
 
 use Eman\WidgetBasket\DataProvider\WidgetDataProvider;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
+use Eman\WidgetBasket\Offer\SpecialOffer;
 
 class WidgetBasket
 {
@@ -13,15 +14,18 @@ class WidgetBasket
     private DeliveryCost $deliveryCost;
     private array $items;
     private float $total = 0;
+    private SpecialOffer $specialOffer;
 
     /**
      * @param WidgetDataProvider $dataProvider
      * @param DeliveryCost       $deliveryCost
+     * @param SpecialOffer       $specialOffer
      */
-    public function __construct(WidgetDataProvider$dataProvider, DeliveryCost $deliveryCost)
+    public function __construct(WidgetDataProvider$dataProvider, DeliveryCost $deliveryCost, SpecialOffer $specialOffer)
     {
         $this->dataProvider = $dataProvider;
         $this->deliveryCost = $deliveryCost;
+        $this->specialOffer = $specialOffer;
     }
 
     /**
@@ -38,7 +42,7 @@ class WidgetBasket
         }
 
         $this->items[] = $code;
-        $this->total += $item['price'];
+        $this->total += $this->specialOffer->applyNewPrice($this->items, $item['price']);
     }
 
     /**
@@ -54,10 +58,10 @@ class WidgetBasket
      */
     public function getTotal(): float
     {
-        return $this->total + (
-            $this->total > 0 ?
-                $this->deliveryCost->calculateCost($this->total) : 0
+        $totalWithDeliveryCost = $this->total + (
+            $this->total > 0 ? $this->deliveryCost->calculateCost($this->total) : 0
             );
+        return floor($totalWithDeliveryCost * 100) / 100;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Eman\WidgetBasket\DataProvider;
 
-class ArrayDataProvider implements WidgetDataProvider
+final class ArrayDataProvider implements WidgetDataProvider
 {
     private array $data;
 

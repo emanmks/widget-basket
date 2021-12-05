@@ -7,6 +7,7 @@ namespace Test;
 use Eman\WidgetBasket\DataProvider\ArrayDataProvider;
 use Eman\WidgetBasket\DeliveryCost;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
+use Eman\WidgetBasket\Offer\RedWidgetHalfPriceForSecondItem;
 use Eman\WidgetBasket\WidgetBasket;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +28,8 @@ class WidgetBasketTest extends TestCase
         ];
         $this->widgetBasket = new WidgetBasket(
             $this->dataProvider,
-            new DeliveryCost($deliveryCostConfig)
+            new DeliveryCost($deliveryCostConfig),
+            new RedWidgetHalfPriceForSecondItem('R01')
         );
     }
 
@@ -50,6 +52,7 @@ class WidgetBasketTest extends TestCase
     }
 
     /**
+     * The test is as stated from test draft
      * @return void
      * @throws WidgetNotFoundException
      */
@@ -61,10 +64,11 @@ class WidgetBasketTest extends TestCase
         $this->widgetBasket->addItem('G01');
         $total += ($this->dataProvider->getItemByCode('G01'))['price'];
 
-        $this->assertEquals($total + $this->deliveryCost1, $this->widgetBasket->getTotal());
+        $this->assertEquals(37.85, $this->widgetBasket->getTotal());
     }
 
     /**
+     * The test is as stated from test draft
      * @return void
      * @throws WidgetNotFoundException
      */
@@ -75,7 +79,7 @@ class WidgetBasketTest extends TestCase
         $total += ($this->dataProvider->getItemByCode('R01'))['price'];
         $this->widgetBasket->addItem('G01');
         $total += ($this->dataProvider->getItemByCode('G01'))['price'];
-        $this->assertEquals($total + $this->deliveryCost2, $this->widgetBasket->getTotal());
+        $this->assertEquals(60.85, $this->widgetBasket->getTotal());
     }
 
     /**
@@ -106,5 +110,26 @@ class WidgetBasketTest extends TestCase
         $this->widgetBasket->addItem('G01');
 
         $this->assertEquals('R01,G01', $this->widgetBasket->getItemList());
+    }
+
+    /**
+     * The test is as stated from test draft
+     * @return void
+     * @throws WidgetNotFoundException
+     */
+    public function testApplySpecialOfferWhenTermAndConditionMet()
+    {
+        $total = 0;
+        $this->widgetBasket->addItem('B01');
+        $total += ($this->dataProvider->getItemByCode('B01'))['price'];
+        $this->widgetBasket->addItem('B01');
+        $total += ($this->dataProvider->getItemByCode('B01'))['price'];
+        $this->widgetBasket->addItem('R01');
+        $total += ($this->dataProvider->getItemByCode('R01'))['price'];
+        $this->widgetBasket->addItem('R01');
+        $total += ($this->dataProvider->getItemByCode('R01'))['price'];
+        $this->widgetBasket->addItem('R01');
+        $total += ($this->dataProvider->getItemByCode('R01'))['price'];
+        $this->assertEquals(98.27, $this->widgetBasket->getTotal());
     }
 }

@@ -7,6 +7,7 @@ The solution is framework-agnostic. Can be integrated with any modern PHP framew
 
 - Add Item
 - Get Total with Delivery Cost Calculation
+- Offer
 
 ## Implementations
 
@@ -16,6 +17,7 @@ The solution is framework-agnostic. Can be integrated with any modern PHP framew
   We can improve to add MySqlDataProvider or PostgresDataProvider to implement persistence.
 - Generic Delivery Cost calculation. 
   We can dynamically configure the delivery cost and applying new delivery cost values will not require a new commit.
+- Dynamically configure and apply a new Offer. Limitation: Existing WidgetBasket only supports single offer.
 
 ## How to use
 
@@ -30,3 +32,12 @@ Every time you add or update a code make sure the tests are passed before commit
 ```shell
 composer test
 ```
+
+## Nice to have
+
+- [] Improvement on handling decimal values
+- [] Entity Classes
+- [] Organize Classes In Bounded Context
+- [] Some values can be instantiated in value objects
+- [] Type checking
+- [] Mess Detection
