@@ -6,6 +6,7 @@ namespace Eman\WidgetBasket;
 
 use Eman\WidgetBasket\DataProvider\WidgetDataProvider;
 use Eman\WidgetBasket\Exceptions\WidgetNotFoundException;
+use Eman\WidgetBasket\Factory\WidgetBasketFactory;
 use Eman\WidgetBasket\Offer\SpecialOffer;
 
 class WidgetBasket

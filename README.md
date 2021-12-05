@@ -11,6 +11,7 @@ The solution is framework-agnostic. Can be integrated with any modern PHP framew
 
 ## Implementations
 
+- PHP8.0+
 - PSR namespaces
 - Composer metapackage
 - Generic Data Provider. The default data provider is ArrayDataProvider.
@@ -22,8 +23,44 @@ The solution is framework-agnostic. Can be integrated with any modern PHP framew
 ## How to use
 
 1. Add this repo as your composer dependencies in your existing project
+```json
+{
+    "require": {
+        "emanmks/widget-basket": "master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:emanmks/widget-basket.git"
+        }
+    ]
+}
+```
 2. Include this repo as a git-sub-module into existing project and import it with PSR-4 namespace
+```json
+{
+  "autoload": {
+    "psr-4": {
+      "Eman\\WidgetBasket\\": "path/to/the/git-submodule/"
+    }
+  }
+}
+```
 3. Manually download the source code, then set up the namespace into your existing project
+```json
+{
+  "autoload": {
+    "psr-4": {
+      "Eman\\WidgetBasket\\": "path/to/the/dir/"
+    }
+  }
+}
+```
+
+Wherever you declare the DI, you only need to add this:
+```php
+WidgetBasket::class => WidgetBasketFactory::class
+```
 
 ## QA / Tests
 
